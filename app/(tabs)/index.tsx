@@ -1,63 +1,62 @@
+import { CategoryBreakdown } from '@/components/CategoryBreakdown';
+import { ExpensesSummary } from '@/components/ExpensesSummary';
+import { HomeHeader } from '@/components/HomeHeader';
+import { RecentTransactions } from '@/components/RecentTransactions';
+import { UpcomingPayments } from '@/components/UpcomingPayments';
+import { COLORS } from '@/constants';
+import { Settings } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  Platform
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Settings } from 'lucide-react-native';
-import { HomeHeader } from '../../components/HomeHeader';
-import { ExpensesSummary } from '../../components/ExpensesSummary';
-import { CategoryBreakdown } from '../../components/CategoryBreakdown';
-import { UpcomingPayments } from '../../components/UpcomingPayments';
-import { RecentTransactions } from '../../components/RecentTransactions';
-import { COLORS, FONT } from '../../constants';
 
 export default function HomeScreen() {
   const [activeFilter, setActiveFilter] = useState('All');
-  
+
   const filters = ['All', 'Today', 'Week', 'Month', 'Custom'];
-  
+
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader 
-        title="ExpenseWise" 
+      <HomeHeader
+        title="ExpenseWise"
         rightIcon={<Settings size={24} color={COLORS.primary} />}
       />
-      
-      <ScrollView 
+
+      <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <ExpensesSummary 
-          totalAmount="$3,705.35" 
+        <ExpensesSummary
+          totalAmount="$3,705.35"
           period="April 2024"
           percentOfBudget={70}
           comparison={{ value: 32, text: 'higher than last month' }}
         />
-        
+
         <View style={styles.analyticsContainer}>
           <Text style={styles.sectionTitle}>Analytics</Text>
           <CategoryBreakdown />
         </View>
-        
+
         <View style={styles.filtersContainer}>
           {filters.map((filter) => (
-            <TouchableOpacity 
+            <TouchableOpacity
               key={filter}
               style={[
                 styles.filterButton,
-                activeFilter === filter && styles.activeFilterButton
+                activeFilter === filter && styles.activeFilterButton,
               ]}
               onPress={() => setActiveFilter(filter)}
             >
-              <Text 
+              <Text
                 style={[
                   styles.filterText,
-                  activeFilter === filter && styles.activeFilterText
+                  activeFilter === filter && styles.activeFilterText,
                 ]}
               >
                 {filter}
@@ -65,9 +64,9 @@ export default function HomeScreen() {
             </TouchableOpacity>
           ))}
         </View>
-        
+
         <UpcomingPayments />
-        
+
         <RecentTransactions />
       </ScrollView>
     </SafeAreaView>

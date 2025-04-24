@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { Eye, EyeOff } from 'lucide-react-native';
-import { COLORS, FONT } from '../../constants';
+import React, { useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { COLORS, FONT } from '@/constants';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -60,7 +67,9 @@ export default function SignUp() {
                 )}
               </TouchableOpacity>
             </View>
-            <Text style={styles.passwordHint}>Must be at least 8 characters</Text>
+            <Text style={styles.passwordHint}>
+              Must be at least 8 characters
+            </Text>
           </View>
 
           <View style={styles.inputGroup}>
@@ -109,9 +118,8 @@ export default function SignUp() {
               />
             </TouchableOpacity>
             <Text style={styles.termsText}>
-              I agree to the{' '}
-              <Text style={styles.link}>Terms of Service</Text> and{' '}
-              <Text style={styles.link}>Privacy Policy</Text>
+              I agree to the <Text style={styles.link}>Terms of Service</Text>{' '}
+              and <Text style={styles.link}>Privacy Policy</Text>
             </Text>
           </View>
 

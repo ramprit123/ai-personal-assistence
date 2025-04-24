@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { Eye, EyeOff } from 'lucide-react-native';
-import { COLORS, FONT } from '../../constants';
+import { COLORS, FONT } from '@/constants';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');

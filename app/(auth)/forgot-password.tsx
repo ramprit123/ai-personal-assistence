@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Link, router } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
-import { COLORS, FONT } from '../../constants';
+import { COLORS, FONT } from '@/constants';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

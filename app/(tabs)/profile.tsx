@@ -1,19 +1,45 @@
+import { COLORS } from '@/constants';
+import {
+  Bell,
+  ChevronLeft,
+  Database,
+  Globe,
+  Globe as Globe2,
+  CircleHelp as HelpCircle,
+  Info,
+  Lock,
+  LogOut,
+  MessagesSquare,
+  Phone,
+  Shield,
+  ShieldAlert,
+  Sun,
+  User,
+} from 'lucide-react-native';
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity,
+import {
   Image,
-  Switch
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft, User, Phone, Globe, Lock, Shield, Bell, Sun, Globe as Globe2, Database, ShieldAlert, CircleHelp as HelpCircle, MessagesSquare, Info, LogOut } from 'lucide-react-native';
-import { COLORS, FONT } from '../../constants';
+import {
+  ProfileItemProps,
+  ToggleItemProps,
+  ProfileScreenState,
+} from '../../_types/profile.types';
 
 // Profile setting item component
-const ProfileItem = ({ icon, title, value, onPress }) => {
+const ProfileItem: React.FC<ProfileItemProps> = ({
+  icon,
+  title,
+  value,
+  onPress,
+}) => {
   return (
     <TouchableOpacity style={styles.profileItem} onPress={onPress}>
       <View style={styles.profileItemLeft}>
@@ -22,14 +48,23 @@ const ProfileItem = ({ icon, title, value, onPress }) => {
       </View>
       <View style={styles.profileItemRight}>
         <Text style={styles.profileItemValue}>{value}</Text>
-        <ChevronLeft size={20} color="#8E8E93" style={{ transform: [{ rotate: '180deg' }] }} />
+        <ChevronLeft
+          size={20}
+          color="#8E8E93"
+          style={{ transform: [{ rotate: '180deg' }] }}
+        />
       </View>
     </TouchableOpacity>
   );
 };
 
 // Toggle setting item component
-const ToggleItem = ({ icon, title, value, onToggle }) => {
+const ToggleItem: React.FC<ToggleItemProps> = ({
+  icon,
+  title,
+  value,
+  onToggle,
+}) => {
   return (
     <View style={styles.profileItem}>
       <View style={styles.profileItemLeft}>
@@ -39,17 +74,22 @@ const ToggleItem = ({ icon, title, value, onToggle }) => {
       <Switch
         value={value}
         onValueChange={onToggle}
-        trackColor={{ false: "#E5E5EA", true: "#FFD9A8" }}
-        thumbColor={value ? COLORS.primary : "#FFFFFF"}
+        trackColor={{ false: '#E5E5EA', true: '#FFD9A8' }}
+        thumbColor={value ? COLORS.primary : '#FFFFFF'}
       />
     </View>
   );
 };
 
-export default function ProfileScreen() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [is2FAEnabled, setIs2FAEnabled] = useState(false);
-  
+export default function ProfileScreen(): JSX.Element {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [is2FAEnabled, setIs2FAEnabled] = useState<boolean>(false);
+
+  const state: ProfileScreenState = {
+    isDarkMode,
+    is2FAEnabled,
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -59,119 +99,124 @@ export default function ProfileScreen() {
         <Text style={styles.headerTitle}>Profile & Settings</Text>
         <View style={{ width: 24 }} />
       </View>
-      
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.profileHeader}>
           <Image
-            source={{ uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg' }}
+            source={{
+              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+            }}
             style={styles.profileImage}
           />
           <Text style={styles.profileName}>John Smith</Text>
           <Text style={styles.profileEmail}>john.smith@email.com</Text>
-          
+
           <TouchableOpacity style={styles.editButton}>
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Personal Information</Text>
-          <ProfileItem 
+          <ProfileItem
             icon={<User size={20} color="#8E8E93" />}
             title="Name"
             value="John Smith"
             onPress={() => {}}
           />
-          <ProfileItem 
+          <ProfileItem
             icon={<Phone size={20} color="#8E8E93" />}
             title="Phone Number"
             value="+1 234 567 890"
             onPress={() => {}}
           />
-          <ProfileItem 
+          <ProfileItem
             icon={<Globe size={20} color="#8E8E93" />}
             title="Language"
             value="English"
             onPress={() => {}}
           />
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Security</Text>
-          <ProfileItem 
+          <ProfileItem
             icon={<Lock size={20} color="#8E8E93" />}
             title="Change Password"
             value=""
             onPress={() => {}}
           />
-          <ToggleItem 
+          <ToggleItem
             icon={<Shield size={20} color="#8E8E93" />}
             title="Two-Factor Authentication"
             value={is2FAEnabled}
             onToggle={() => setIs2FAEnabled(!is2FAEnabled)}
           />
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>App Preferences</Text>
-          <ProfileItem 
+          <ProfileItem
             icon={<Bell size={20} color="#8E8E93" />}
             title="Notifications"
             value="Enabled"
             onPress={() => {}}
           />
-          <ToggleItem 
+          <ToggleItem
             icon={<Sun size={20} color="#8E8E93" />}
             title="Dark Theme"
             value={isDarkMode}
             onToggle={() => setIsDarkMode(!isDarkMode)}
           />
-          <ProfileItem 
+          <ProfileItem
             icon={<Globe2 size={20} color="#8E8E93" />}
             title="Regional Settings"
             value="USD, MM/DD/YYYY"
             onPress={() => {}}
           />
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Data & Privacy</Text>
-          <ProfileItem 
+          <ProfileItem
             icon={<Database size={20} color="#8E8E93" />}
             title="Export Data"
             value=""
             onPress={() => {}}
           />
-          <ProfileItem 
+          <ProfileItem
             icon={<ShieldAlert size={20} color="#8E8E93" />}
             title="Privacy Settings"
             value=""
             onPress={() => {}}
           />
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Support & About</Text>
-          <ProfileItem 
+          <ProfileItem
             icon={<HelpCircle size={20} color="#8E8E93" />}
             title="Help Center"
             value=""
             onPress={() => {}}
           />
-          <ProfileItem 
+          <ProfileItem
             icon={<MessagesSquare size={20} color="#8E8E93" />}
             title="FAQs"
             value=""
             onPress={() => {}}
           />
-          <ProfileItem 
+          <ProfileItem
             icon={<Info size={20} color="#8E8E93" />}
             title="About Us"
             value=""
             onPress={() => {}}
           />
         </View>
-        
+
         <TouchableOpacity style={styles.signOutButton}>
           <LogOut size={20} color="white" style={{ marginRight: 8 }} />
           <Text style={styles.signOutText}>Sign Out</Text>

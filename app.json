@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AI Personal Assistance",
+    "name": "bolt-expo-nativewind",
     "slug": "bolt-expo-nativewind",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,8 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.ramprit.bolt-expo-nativewind"
+      "supportsTablet": true
     },
     "web": {
       "bundler": "metro",

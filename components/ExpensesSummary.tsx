@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Animated, {
+import { View, Text, StyleSheet } from 'react-native';
+import Animated, { 
+  useAnimatedStyle, 
+  withSpring,
   FadeIn,
-  Layout,
-  useAnimatedStyle,
-  withSpring
+  Layout 
 } from 'react-native-reanimated';
-import { COLORS } from '../constants';
+import { COLORS, FONT, SIZES } from '../constants';
 
 type ExpensesSummaryProps = {
   totalAmount: string;

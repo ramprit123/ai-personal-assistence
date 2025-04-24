@@ -1,56 +1,57 @@
-import { AddExpenseForm } from '@/components/AddExpenseForm';
-import { ExpenseCard } from '@/components/ExpenseCard';
-import { COLORS } from '@/constants';
-import { Settings } from 'lucide-react-native';
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  TouchableOpacity, 
+  TextInput
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Settings, Calendar, ChevronDown } from 'lucide-react-native';
+import { ExpenseCard } from '../../components/ExpenseCard';
+import { AddExpenseForm } from '../../components/AddExpenseForm';
+import { COLORS, FONT, SIZES } from '../../constants';
 
 export default function ExpensesScreen() {
   const [showAddExpense, setShowAddExpense] = useState(false);
 
   // Sample expense data
   const expenses = [
-    {
-      id: '1',
-      category: 'Food',
-      amount: 25.5,
+    { 
+      id: '1', 
+      category: 'Food', 
+      amount: 25.50, 
       time: 'Today, 2:30 PM',
-      icon: '🍔',
+      icon: '🍔'
     },
-    {
-      id: '2',
-      category: 'Transport',
-      amount: 35.0,
+    { 
+      id: '2', 
+      category: 'Transport', 
+      amount: 35.00, 
       time: 'Today, 11:20 AM',
-      icon: '🚕',
+      icon: '🚕'
     },
-    {
-      id: '3',
-      category: 'Shopping',
-      amount: 120.8,
+    { 
+      id: '3', 
+      category: 'Shopping', 
+      amount: 120.80, 
       time: 'Yesterday, 5:15 PM',
-      icon: '👕',
+      icon: '👕'
     },
-    {
-      id: '4',
-      category: 'Healthcare',
-      amount: 75.0,
+    { 
+      id: '4', 
+      category: 'Healthcare', 
+      amount: 75.00, 
       time: 'Yesterday, 3:45 PM',
-      icon: '💊',
+      icon: '💊'
     },
-    {
-      id: '5',
-      category: 'Entertainment',
-      amount: 45.99,
+    { 
+      id: '5', 
+      category: 'Entertainment', 
+      amount: 45.99, 
       time: 'Apr 18, 7:30 PM',
-      icon: '🎬',
+      icon: '🎬'
     },
   ];
 
@@ -62,23 +63,23 @@ export default function ExpensesScreen() {
           <Settings size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-
+      
       <View style={styles.summaryCard}>
         <Text style={styles.summaryLabel}>Total Expenses</Text>
         <Text style={styles.summaryAmount}>$2,458.35</Text>
         <Text style={styles.summaryPeriod}>April 2024</Text>
-
+        
         <View style={styles.progressContainer}>
           <View style={[styles.progressBar, { width: '70%' }]} />
         </View>
         <Text style={styles.progressText}>70% of monthly budget</Text>
       </View>
-
+      
       <Text style={styles.sectionTitle}>Recent Expenses</Text>
-
+      
       <ScrollView style={styles.expensesList}>
         {expenses.map((expense) => (
-          <ExpenseCard
+          <ExpenseCard 
             key={expense.id}
             category={expense.category}
             amount={expense.amount}
@@ -87,11 +88,11 @@ export default function ExpensesScreen() {
           />
         ))}
       </ScrollView>
-
+      
       {showAddExpense ? (
         <AddExpenseForm onClose={() => setShowAddExpense(false)} />
       ) : (
-        <TouchableOpacity
+        <TouchableOpacity 
           style={styles.addButton}
           onPress={() => setShowAddExpense(true)}
         >

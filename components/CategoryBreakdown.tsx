@@ -1,50 +1,52 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import Svg, { Path, G } from 'react-native-svg';
-import Animated, { FadeIn, FadeInRight, Layout } from 'react-native-reanimated';
+import Animated, { 
+  FadeIn, 
+  FadeInRight,
+  Layout 
+} from 'react-native-reanimated';
 import { COLORS } from '../constants';
 
 // Simple donut chart component (in a real app would use a charting library)
-const DonutChart = ({
-  data,
-}: {
-  data: Array<{ value: number; color: string }>;
-}) => {
+const DonutChart = ({ data }) => {
   const width = 150;
   const height = 150;
   const radius = Math.min(width, height) / 2;
   const centerX = width / 2;
   const centerY = height / 2;
-
+  
   // Calculate paths for the donut segments
-  const createDonutSegment = (
-    startAngle: number,
-    endAngle: number,
-    color: string
-  ) => {
+  const createDonutSegment = (startAngle, endAngle, color) => {
     const x1 = centerX + radius * Math.cos(startAngle);
     const y1 = centerY + radius * Math.sin(startAngle);
     const x2 = centerX + radius * Math.cos(endAngle);
     const y2 = centerY + radius * Math.sin(endAngle);
-
+    
     const largeArcFlag = endAngle - startAngle > Math.PI ? 1 : 0;
-
+    
     const pathData = [
       `M ${centerX} ${centerY}`,
       `L ${x1} ${y1}`,
       `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-      'Z',
+      'Z'
     ].join(' ');
-
-    return <Path key={startAngle} d={pathData} fill={color} />;
+    
+    return (
+      <Path
+        key={startAngle}
+        d={pathData}
+        fill={color}
+      />
+    );
   };
-
+  
   let currentAngle = 0;
   const segments = data.map((item) => {
     const startAngle = currentAngle;
     const angleValue = (item.value / 100) * (2 * Math.PI);
     currentAngle += angleValue;
-
+    
     return createDonutSegment(startAngle, currentAngle, item.color);
   });
 
@@ -59,21 +61,9 @@ const DonutChart = ({
 };
 
 // Circle component for SVG
-const Circle = ({
-  cx,
-  cy,
-  r,
-  fill,
-}: {
-  cx: number;
-  cy: number;
-  r: number;
-  fill: string;
-}) => (
+const Circle = ({ cx, cy, r, fill }) => (
   <Path
-    d={`M ${cx - r} ${cy} a ${r} ${r} 0 1 0 ${r * 2} 0 a ${r} ${r} 0 1 0 ${
-      -r * 2
-    } 0`}
+    d={`M ${cx - r} ${cy} a ${r} ${r} 0 1 0 ${r * 2} 0 a ${r} ${r} 0 1 0 ${-r * 2} 0`}
     fill={fill}
   />
 );
@@ -89,28 +79,26 @@ export const CategoryBreakdown = () => {
   ];
 
   return (
-    <Animated.View
+    <Animated.View 
       style={styles.container}
       entering={FadeIn}
       layout={Layout.springify()}
     >
       <Text style={styles.title}>Spending by Category</Text>
-
+      
       <View style={styles.chartContainer}>
         <Animated.View entering={FadeIn.delay(300)}>
           <DonutChart data={categoryData} />
         </Animated.View>
-
+        
         <View style={styles.legend}>
           {categoryData.map((item, index) => (
-            <Animated.View
-              key={item.category}
+            <Animated.View 
+              key={item.category} 
               style={styles.legendItem}
               entering={FadeInRight.delay(index * 100)}
             >
-              <View
-                style={[styles.colorBox, { backgroundColor: item.color }]}
-              />
+              <View style={[styles.colorBox, { backgroundColor: item.color }]} />
               <Text style={styles.categoryText}>{item.category}</Text>
               <Text style={styles.percentText}>{item.value}%</Text>
             </Animated.View>

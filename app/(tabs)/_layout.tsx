@@ -1,22 +1,13 @@
-import {
-  Poppins_400Regular,
-  Poppins_500Medium,
-  Poppins_600SemiBold,
-  Poppins_700Bold,
-  useFonts,
-} from '@expo-google-fonts/poppins';
-import { SplashScreen, Tabs } from 'expo-router';
-import { Bell, DollarSign, Chrome as Home, User } from 'lucide-react-native';
+import { Tabs } from 'expo-router';
+import { Chrome as Home, DollarSign, Bell, User } from 'lucide-react-native';
+import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import { useEffect } from 'react';
-import { Platform, useWindowDimensions } from 'react-native';
+import { SplashScreen } from 'expo-router';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
 export default function TabLayout() {
-  const { width, height } = useWindowDimensions();
-  const isLandscape = width > height;
-
   const [fontsLoaded, fontError] = useFonts({
     'Poppins-Regular': Poppins_400Regular,
     'Poppins-Medium': Poppins_500Medium,
@@ -42,89 +33,44 @@ export default function TabLayout() {
         tabBarActiveTintColor: '#FF9500',
         tabBarInactiveTintColor: '#8E8E93',
         tabBarStyle: {
-          borderTopWidth: 0.5,
+          borderTopWidth: 1,
           borderTopColor: '#E5E5EA',
-          height: Platform.select({
-            ios: 85,
-            android: isLandscape ? 45 : 55,
-          }),
-          paddingBottom: Platform.select({
-            ios: 30,
-            android: 5,
-          }),
-          paddingTop: Platform.select({
-            ios: 10,
-            android: 5,
-          }),
-          backgroundColor: '#FFFFFF',
-          elevation: 8,
-          shadowColor: '#000000',
-          shadowOffset: {
-            width: 0,
-            height: -1,
-          },
-          shadowOpacity: 0.05,
-          shadowRadius: 2,
+          height: 60,
+          paddingBottom: 5,
         },
         tabBarLabelStyle: {
           fontFamily: 'Poppins-Medium',
-          fontSize: Platform.select({
-            ios: 11,
-            android: isLandscape ? 10 : 12,
-          }),
-          marginTop: Platform.select({
-            ios: 0,
-            android: 0,
-          }),
-          paddingBottom: Platform.select({
-            ios: 5,
-            android: 0,
-          }),
-        },
-        tabBarIconStyle: {
-          marginTop: Platform.select({
-            ios: 0,
-            android: 0,
-          }),
+          fontSize: 12,
         },
         headerShown: false,
-        tabBarShowLabel: true,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Home size={isLandscape ? size - 4 : size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="expenses"
         options={{
           title: 'Expenses',
-          tabBarIcon: ({ color, size }) => (
-            <DollarSign size={isLandscape ? size - 4 : size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <DollarSign size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="reminders"
         options={{
           title: 'Reminders',
-          tabBarIcon: ({ color, size }) => (
-            <Bell size={isLandscape ? size - 4 : size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Bell size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <User size={isLandscape ? size - 4 : size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <User size={size} color={color} />,
         }}
       />
     </Tabs>

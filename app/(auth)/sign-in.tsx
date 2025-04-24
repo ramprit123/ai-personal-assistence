@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import { Link, router } from 'expo-router';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { COLORS, FONT } from '@/constants';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = () => {
-    // Implement sign in logic
-    console.log('Sign in:', { email, password });
+  const { signIn, loading, error } = useAuthStore();
+
+  const handleSignIn = async () => {
+    try {
+      await signIn({ email, password });
+      router.replace('/(tabs)');
+    } catch (err) {
+      console.error('Sign in error:', err);
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>
-          Sign in to your account to continue
-        </Text>
+        <Text style={styles.subtitle}>Sign in to your account to continue</Text>
 
         <View style={styles.form}>
           <View style={styles.inputGroup}>
@@ -86,7 +98,11 @@ export default function SignIn() {
             <Text style={styles.footerText}>Don't have an account? </Text>
             <Link href="/sign-up" asChild>
               <TouchableOpacity>
-                <Text style={styles.footerLink}>Sign Up</Text>
+                {loading ? (
+                  <ActivityIndicator size="small" color={COLORS.primary} />
+                ) : (
+                  <Text style={styles.buttonText}>Sign Up</Text>
+                )}
               </TouchableOpacity>
             </Link>
           </View>

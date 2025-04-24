@@ -1,30 +1,43 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { Link, router } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import { COLORS, FONT } from '@/constants';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
 
-  const handleResetPassword = () => {
-    // Implement password reset logic
-    console.log('Reset password for:', email);
+  const { resetPassword, loading: isLoading, error } = useAuthStore();
+
+  const handleResetPassword = async () => {
+    try {
+      await resetPassword(email);
+      alert('Password reset instructions have been sent to your email');
+      router.back();
+    } catch (err) {
+      console.error('Password reset error:', err);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <ArrowLeft size={24} color={COLORS.black} />
       </TouchableOpacity>
 
       <View style={styles.content}>
         <Text style={styles.title}>Forgot Password?</Text>
         <Text style={styles.subtitle}>
-          Enter your email address and we'll send you instructions to reset your password
+          Enter your email address and we'll send you instructions to reset your
+          password
         </Text>
 
         <View style={styles.form}>
@@ -48,7 +61,11 @@ export default function ForgotPassword() {
             <Text style={styles.footerText}>Remember your password? </Text>
             <Link href="/sign-in" asChild>
               <TouchableOpacity>
-                <Text style={styles.footerLink}>Sign In</Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color={COLORS.primary} />
+                ) : (
+                  <Text style={styles.footerLink}>Sign In</Text>
+                )}
               </TouchableOpacity>
             </Link>
           </View>

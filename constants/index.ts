@@ -13,6 +13,7 @@ export const COLORS = {
   ultraLightGray: '#E5E5EA',
   background: '#F2F2F7',
   white: '#FFFFFF',
+  errorLight: '#FFECEC',
 };
 
 export const FONT = {

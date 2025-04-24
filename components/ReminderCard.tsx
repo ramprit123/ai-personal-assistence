@@ -1,6 +1,7 @@
+import { Check, MoveVertical as MoreVertical } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MoveVertical as MoreVertical, Check } from 'lucide-react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated';
 import { COLORS } from '../constants';
 
 type ReminderCardProps = {
@@ -21,7 +22,12 @@ export const ReminderCard = ({
   const [completed, setCompleted] = useState(isCompleted);
   
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      style={styles.container}
+      entering={FadeIn}
+      exiting={FadeOut}
+      layout={Layout.springify()}
+    >
       <View style={styles.header}>
         <TouchableOpacity
           style={[
@@ -30,15 +36,22 @@ export const ReminderCard = ({
           ]}
           onPress={() => setCompleted(!completed)}
         >
-          {completed && <Check size={16} color="white" />}
+          {completed && (
+            <Animated.View entering={FadeIn} exiting={FadeOut}>
+              <Check size={16} color="white" />
+            </Animated.View>
+          )}
         </TouchableOpacity>
         
-        <Text style={[
-          styles.title,
-          completed && styles.completedTitle
-        ]}>
+        <Animated.Text 
+          style={[
+            styles.title,
+            completed && styles.completedTitle
+          ]}
+          layout={Layout.springify()}
+        >
           {title}
-        </Text>
+        </Animated.Text>
         
         <TouchableOpacity>
           <MoreVertical size={20} color="#8E8E93" />
@@ -57,7 +70,7 @@ export const ReminderCard = ({
           <Text style={styles.description}>{description}</Text>
         )}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

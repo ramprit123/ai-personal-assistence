@@ -1,6 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS, FONT, SIZES } from '../constants';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  FadeIn,
+  Layout,
+  useAnimatedStyle,
+  withSpring
+} from 'react-native-reanimated';
+import { COLORS } from '../constants';
 
 type ExpensesSummaryProps = {
   totalAmount: string;
@@ -18,31 +24,45 @@ export const ExpensesSummary = ({
   percentOfBudget,
   comparison 
 }: ExpensesSummaryProps) => {
+  const progressStyle = useAnimatedStyle(() => ({
+    width: withSpring(`${percentOfBudget}%`, {
+      damping: 15,
+      stiffness: 100,
+    }),
+  }));
+
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      style={styles.container}
+      entering={FadeIn}
+      layout={Layout.springify()}
+    >
       <Text style={styles.label}>Total Expenses{comparison ? ' This Month' : ''}</Text>
-      <Text style={styles.amount}>{totalAmount}</Text>
+      <Animated.Text 
+        style={styles.amount}
+        entering={FadeIn.delay(200)}
+      >
+        {totalAmount}
+      </Animated.Text>
       
       <View style={styles.progressContainer}>
-        <View 
-          style={[
-            styles.progressBar, 
-            { width: `${percentOfBudget}%` }
-          ]} 
-        />
+        <Animated.View style={[styles.progressBar, progressStyle]} />
       </View>
       
       {comparison ? (
-        <Text style={styles.comparisonText}>
+        <Animated.Text 
+          style={styles.comparisonText}
+          entering={FadeIn.delay(400)}
+        >
           {comparison.value}% {comparison.text}
-        </Text>
+        </Animated.Text>
       ) : (
         <View style={styles.details}>
           <Text style={styles.period}>{period}</Text>
           <Text style={styles.budgetText}>{percentOfBudget}% of monthly budget</Text>
         </View>
       )}
-    </View>
+    </Animated.View>
   );
 };
 

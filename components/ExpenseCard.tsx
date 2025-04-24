@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS } from '../constants';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 
 type ExpenseCardProps = {
   category: string;
@@ -11,7 +11,11 @@ type ExpenseCardProps = {
 
 export const ExpenseCard = ({ category, amount, time, icon }: ExpenseCardProps) => {
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      entering={FadeInRight}
+      exiting={FadeOutLeft}
+      style={styles.container}
+    >
       <View style={styles.leftSection}>
         <Text style={styles.icon}>{icon}</Text>
         <View style={styles.details}>
@@ -20,7 +24,7 @@ export const ExpenseCard = ({ category, amount, time, icon }: ExpenseCardProps) 
         </View>
       </View>
       <Text style={styles.amount}>${amount.toFixed(2)}</Text>
-    </View>
+    </Animated.View>
   );
 };
 

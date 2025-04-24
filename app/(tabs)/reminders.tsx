@@ -1,25 +1,23 @@
+import { NewReminderModal } from '@/components/NewReminderModal';
+import { ReminderCard } from '@/components/ReminderCard';
+import { COLORS } from '@/constants';
+import { Plus } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Modal,
-  TextInput
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Clock, RotateCcw, X, Check } from 'lucide-react-native';
-import { ReminderCard } from '../../components/ReminderCard';
-import { NewReminderModal } from '../../components/NewReminderModal';
-import { COLORS, FONT } from '../../constants';
 
 export default function RemindersScreen() {
   const [activeTab, setActiveTab] = useState('All');
   const [showModal, setShowModal] = useState(false);
-  
+
   const tabs = ['All', 'Today', 'Upcoming', 'Completed'];
-  
+
   // Sample reminder data
   const todayReminders = [
     {
@@ -39,7 +37,7 @@ export default function RemindersScreen() {
       isCompleted: false,
     },
   ];
-  
+
   const tomorrowReminders = [
     {
       id: '3',
@@ -54,7 +52,7 @@ export default function RemindersScreen() {
       title: 'Pay Rent',
       time: '11:59 PM',
       repeat: 'Monthly',
-      description: 'Transfer to landlord\'s account',
+      description: "Transfer to landlord's account",
       isCompleted: false,
     },
   ];
@@ -63,28 +61,25 @@ export default function RemindersScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Reminders</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.addButton}
           onPress={() => setShowModal(true)}
         >
           <Plus size={24} color="white" />
         </TouchableOpacity>
       </View>
-      
+
       <View style={styles.tabsContainer}>
         {tabs.map((tab) => (
           <TouchableOpacity
             key={tab}
-            style={[
-              styles.tab,
-              activeTab === tab && styles.activeTab
-            ]}
+            style={[styles.tab, activeTab === tab && styles.activeTab]}
             onPress={() => setActiveTab(tab)}
           >
-            <Text 
+            <Text
               style={[
                 styles.tabText,
-                activeTab === tab && styles.activeTabText
+                activeTab === tab && styles.activeTabText,
               ]}
             >
               {tab}
@@ -92,12 +87,12 @@ export default function RemindersScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Today</Text>
           {todayReminders.map((reminder) => (
-            <ReminderCard 
+            <ReminderCard
               key={reminder.id}
               title={reminder.title}
               time={reminder.time}
@@ -107,11 +102,11 @@ export default function RemindersScreen() {
             />
           ))}
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Tomorrow</Text>
           {tomorrowReminders.map((reminder) => (
-            <ReminderCard 
+            <ReminderCard
               key={reminder.id}
               title={reminder.title}
               time={reminder.time}
@@ -122,9 +117,9 @@ export default function RemindersScreen() {
           ))}
         </View>
       </ScrollView>
-      
+
       {/* New Reminder Modal */}
-      <NewReminderModal 
+      <NewReminderModal
         visible={showModal}
         onClose={() => setShowModal(false)}
       />

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { COLORS, FONT } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
+import { ErrorMessage } from '@/components/ErrorMessage';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -78,7 +79,7 @@ export default function SignUp() {
         <Text style={styles.subtitle}>
           Please fill in the information below to create your account
         </Text>
-
+        {error && <ErrorMessage message={error} visible />}
         <View style={styles.form}>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Email Address</Text>

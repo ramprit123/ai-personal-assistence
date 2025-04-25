@@ -151,13 +151,15 @@ export const NewReminderModal = ({ visible, onClose }: NewReminderModalProps) =>
 };
 
 // Check component for checkboxes
-const Check = ({ size, color }) => (
-  <View style={{ 
-    width: size, 
-    height: size, 
-    alignItems: 'center',
-    justifyContent: 'center' 
-  }}>
+const Check = ({ size, color }: { size: number; color: string }) => (
+  <View
+    style={{
+      width: size,
+      height: size,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
     <Text style={{ color, fontSize: size - 4 }}>✓</Text>
   </View>
 );

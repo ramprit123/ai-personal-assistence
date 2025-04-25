@@ -10,7 +10,6 @@ export default function RootLayout() {
   const { isAuthenticated, loading } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
-  console.log('isAuthenticated', isAuthenticated, loading, segments);
   useEffect(() => {
     if (loading) return; // Wait until auth state is loaded
     const inAuthGroup = segments[0] === '(auth)';

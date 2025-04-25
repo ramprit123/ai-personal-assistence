@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
 import { COLORS, FONT } from '@/constants';
+import { useAuthStore } from '@/store/useAuthStore';
 import {
-  useFonts,
   Poppins_400Regular,
   Poppins_500Medium,
   Poppins_600SemiBold,
   Poppins_700Bold,
+  useFonts,
 } from '@expo-google-fonts/poppins';
-import { SplashScreen } from 'expo-router';
+import { Link, Redirect, SplashScreen } from 'expo-router';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 SplashScreen.preventAutoHideAsync();
 
 export default function WelcomeScreen() {
+  const { isAuthenticated } = useAuthStore();
+
   const [fontsLoaded, fontError] = useFonts({
     'Poppins-Regular': Poppins_400Regular,
     'Poppins-Medium': Poppins_500Medium,
@@ -31,6 +33,8 @@ export default function WelcomeScreen() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  if (!isAuthenticated) return <Redirect href="/(auth)/sign-in"></Redirect>;
+  if (isAuthenticated) return <Redirect href="/(app)/(tabs)"></Redirect>;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome!</Text>
@@ -81,6 +85,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     gap: 16,
+    alignItems: 'center', // Center horizontally
+    justifyContent: 'center', // Center vertically
   },
   button: {
     height: 50,

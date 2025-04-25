@@ -11,6 +11,7 @@ import { Link, router } from 'expo-router';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { COLORS, FONT } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
+import { ErrorMessage } from '@/components/ErrorMessage';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ export default function SignIn() {
   const handleSignIn = async () => {
     try {
       await signIn({ email, password });
-      router.replace('/(tabs)');
+      router.replace('/(app)/(tabs)');
     } catch (err) {
       console.error('Sign in error:', err);
     }
@@ -33,7 +34,7 @@ export default function SignIn() {
       <View style={styles.content}>
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Sign in to your account to continue</Text>
-
+        {error && <ErrorMessage message={error} visible />}
         <View style={styles.form}>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Email Address</Text>

@@ -62,7 +62,7 @@ export default function SignUp() {
 
     try {
       await signUp({ email, password, fullName });
-      router.replace('/(tabs)');
+      router.replace('/(app)/(tabs)');
     } catch (err: any) {
       setErrors({
         submit:
@@ -103,12 +103,14 @@ export default function SignUp() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordContainer}>
+            <View
+              style={[
+                styles.passwordContainer,
+                errors.password && styles.inputError,
+              ]}
+            >
               <TextInput
-                style={[
-                  styles.passwordInput,
-                  errors.password && styles.inputError,
-                ]}
+                style={styles.passwordInput} // Remove array style
                 placeholder="Create your password"
                 value={password}
                 onChangeText={(text) => {
@@ -117,6 +119,16 @@ export default function SignUp() {
                 }}
                 secureTextEntry={!showPassword}
               />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff size={20} color={COLORS.gray} />
+                ) : (
+                  <Eye size={20} color={COLORS.gray} />
+                )}
+              </TouchableOpacity>
             </View>
             {errors.password && (
               <View style={styles.errorContainer}>
@@ -124,169 +136,152 @@ export default function SignUp() {
                 <Text style={styles.errorText}>{errors.password}</Text>
               </View>
             )}
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <EyeOff size={20} color={COLORS.gray} />
-              ) : (
-                <Eye size={20} color={COLORS.gray} />
-              )}
-            </TouchableOpacity>
+            <Text style={styles.passwordHint}>
+              Must be at least 8 characters
+            </Text>
           </View>
-          <Text style={styles.passwordHint}>Must be at least 8 characters</Text>
-        </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Confirm Password</Text>
-          <View style={styles.passwordContainer}>
-            <TextInput
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Confirm Password</Text>
+            <View
               style={[
-                styles.passwordInput,
+                styles.passwordContainer,
                 errors.confirmPassword && styles.inputError,
               ]}
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChangeText={(text) => {
-                setConfirmPassword(text);
-                setErrors((prev) => ({
-                  ...prev,
-                  confirmPassword: '',
-                  submit: '',
-                }));
-              }}
-              secureTextEntry={!showConfirmPassword}
+            >
+              <TextInput
+                style={styles.passwordInput} // Remove array style
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                onChangeText={(text) => {
+                  setConfirmPassword(text);
+                  setErrors((prev) => ({
+                    ...prev,
+                    confirmPassword: '',
+                    submit: '',
+                  }));
+                }}
+                secureTextEntry={!showConfirmPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff size={20} color={COLORS.gray} />
+                ) : (
+                  <Eye size={20} color={COLORS.gray} />
+                )}
+              </TouchableOpacity>
+            </View>
+            {errors.confirmPassword && (
+              <View style={styles.errorContainer}>
+                <AlertCircle size={16} color={COLORS.error} />
+                <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+              </View>
+            )}
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Full Name (Optional)</Text>
+            <TextInput
+              style={styles.input} // No error state needed for optional field
+              placeholder="Enter your full name"
+              value={fullName}
+              onChangeText={setFullName}
             />
           </View>
-          {errors.confirmPassword && (
+
+          <View style={styles.termsContainer}>
+            <TouchableOpacity
+              style={styles.checkbox}
+              onPress={() => {
+                setAgreeToTerms(!agreeToTerms);
+                setErrors((prev) => ({ ...prev, terms: '', submit: '' }));
+              }}
+            >
+              <View
+                style={[
+                  styles.checkboxInner,
+                  agreeToTerms && styles.checkboxChecked,
+                ]}
+              />
+            </TouchableOpacity>
+            <Text style={styles.termsText}>
+              I agree to the <Text style={styles.link}>Terms of Service</Text>{' '}
+              and <Text style={styles.link}>Privacy Policy</Text>
+            </Text>
+          </View>
+          {errors.terms && (
             <View style={styles.errorContainer}>
               <AlertCircle size={16} color={COLORS.error} />
-              <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+              <Text style={styles.errorText}>{errors.terms}</Text>
             </View>
           )}
+
+          {errors.submit && (
+            <View style={[styles.errorContainer, { marginTop: 16 }]}>
+              <AlertCircle size={16} color={COLORS.error} />
+              <Text style={styles.errorText}>{errors.submit}</Text>
+            </View>
+          )}
+
           <TouchableOpacity
-            style={styles.eyeIcon}
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={[
+              styles.button,
+              (!agreeToTerms || loading) && styles.buttonDisabled,
+            ]}
+            onPress={handleSignUp}
+            disabled={!agreeToTerms || loading}
           >
-            {showConfirmPassword ? (
-              <EyeOff size={20} color={COLORS.gray} />
+            {loading ? (
+              <ActivityIndicator size="small" color={COLORS.white} />
             ) : (
-              <Eye size={20} color={COLORS.gray} />
+              <Text style={styles.buttonText}>Sign Up</Text>
             )}
           </TouchableOpacity>
-        </View>
-      </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Full Name (Optional)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your full name"
-          value={fullName}
-          onChangeText={setFullName}
-        />
-      </View>
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>Or sign up with</Text>
+            <View style={styles.dividerLine} />
+          </View>
 
-      <View style={styles.termsContainer}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() => setAgreeToTerms(!agreeToTerms)}
-        >
-          <View
-            style={[
-              styles.checkboxInner,
-              agreeToTerms && styles.checkboxChecked,
-            ]}
-          />
-        </TouchableOpacity>
-        <Text style={styles.termsText}>
-          I agree to the <Text style={styles.link}>Terms of Service</Text> and{' '}
-          <Text style={styles.link}>Privacy Policy</Text>
-        </Text>
-      </View>
-
-      {errors.terms && (
-        <View style={styles.errorContainer}>
-          <AlertCircle size={16} color={COLORS.error} />
-          <Text style={styles.errorText}>{errors.terms}</Text>
-        </View>
-      )}
-
-      {errors.submit && (
-        <View style={[styles.errorContainer, styles.submitError]}>
-          <AlertCircle size={16} color={COLORS.error} />
-          <Text style={styles.errorText}>{errors.submit}</Text>
-        </View>
-      )}
-
-      <TouchableOpacity
-        style={[styles.button, !agreeToTerms && styles.buttonDisabled]}
-        onPress={handleSignUp}
-        disabled={!agreeToTerms || loading}
-      >
-        {loading ? (
-          <ActivityIndicator size="small" color={COLORS.primary} />
-        ) : (
-          <Text style={styles.buttonText}>Sign Up</Text>
-        )}
-      </TouchableOpacity>
-
-      <View style={styles.divider}>
-        <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>Or sign up with</Text>
-        <View style={styles.dividerLine} />
-      </View>
-
-      <TouchableOpacity style={styles.socialButton}>
-        <Text style={styles.socialButtonText}>Continue with Google</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.socialButton}>
-        <Text style={styles.socialButtonText}>Continue with Apple</Text>
-      </TouchableOpacity>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Already have an account? </Text>
-        <Link href="/sign-in" asChild>
-          <TouchableOpacity>
-            <Text style={styles.footerLink}>Sign In</Text>
+          <TouchableOpacity style={styles.socialButton}>
+            {/* TODO: Add Google Icon */}
+            <Text style={styles.socialButtonText}>Continue with Google</Text>
           </TouchableOpacity>
-        </Link>
+
+          <TouchableOpacity style={styles.socialButton}>
+            {/* TODO: Add Apple Icon */}
+            <Text style={styles.socialButtonText}>Continue with Apple</Text>
+          </TouchableOpacity>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Already have an account? </Text>
+            <Link href="/sign-in" asChild>
+              <TouchableOpacity>
+                <Text style={styles.footerLink}>Sign In</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
 }
 
+// Styles are defined above
+// const styles = StyleSheet.create({
+
 const styles = StyleSheet.create({
-  errorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-    gap: 4,
-  },
-  errorText: {
-    fontFamily: FONT.regular,
-    fontSize: 12,
-    color: COLORS.error,
-    flex: 1,
-  },
-  inputError: {
-    borderColor: COLORS.error,
-  },
-  submitError: {
-    backgroundColor: COLORS.errorLight,
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
   },
   content: {
     padding: 24,
-    paddingTop: 60,
+    paddingTop: 60, // Match sign-in padding
   },
   title: {
     fontFamily: FONT.bold,
@@ -320,12 +315,16 @@ const styles = StyleSheet.create({
     fontFamily: FONT.regular,
     fontSize: 16,
   },
+  inputError: {
+    borderColor: COLORS.error,
+  },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.ultraLightGray,
     borderRadius: 8,
+    position: 'relative', // Needed for absolute positioning of eye icon
   },
   passwordInput: {
     flex: 1,
@@ -333,8 +332,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontFamily: FONT.regular,
     fontSize: 16,
+    paddingRight: 48, // Make space for the eye icon
   },
   eyeIcon: {
+    position: 'absolute',
+    right: 0,
     padding: 12,
   },
   passwordHint: {
@@ -346,20 +348,22 @@ const styles = StyleSheet.create({
   termsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 8, // Adjust spacing
     gap: 12,
   },
   checkbox: {
     width: 20,
     height: 20,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: COLORS.primary,
     borderRadius: 4,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   checkboxInner: {
     width: 12,
     height: 12,
+    backgroundColor: 'transparent',
     borderRadius: 2,
   },
   checkboxChecked: {
@@ -369,10 +373,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: FONT.regular,
     fontSize: 14,
-    color: COLORS.black,
+    color: COLORS.gray,
+    lineHeight: 20,
   },
   link: {
+    fontFamily: FONT.medium,
     color: COLORS.primary,
+    textDecorationLine: 'underline',
   },
   button: {
     height: 48,
@@ -380,10 +387,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 8,
+    marginTop: 16, // Adjust spacing
   },
   buttonDisabled: {
-    opacity: 0.5,
+    backgroundColor: COLORS.lightGray,
   },
   buttonText: {
     fontFamily: FONT.semiBold,
@@ -413,7 +420,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    flexDirection: 'row',
+    gap: 12,
   },
   socialButtonText: {
     fontFamily: FONT.medium,
@@ -425,6 +433,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 24,
+    paddingBottom: 24, // Add padding at the bottom for scroll view
   },
   footerText: {
     fontFamily: FONT.regular,
@@ -435,5 +444,16 @@ const styles = StyleSheet.create({
     fontFamily: FONT.medium,
     fontSize: 14,
     color: COLORS.primary,
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 4,
+  },
+  errorText: {
+    fontFamily: FONT.regular,
+    fontSize: 12,
+    color: COLORS.error,
   },
 });

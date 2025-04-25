@@ -1,32 +1,9 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, DollarSign, Bell, User } from 'lucide-react-native';
-import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
-import { useEffect } from 'react';
-import { SplashScreen } from 'expo-router';
+import { Bell, DollarSign, Chrome as Home, User } from 'lucide-react-native';
 
-// Prevent splash screen from auto-hiding
-SplashScreen.preventAutoHideAsync();
 
 export default function TabLayout() {
-  const [fontsLoaded, fontError] = useFonts({
-    'Poppins-Regular': Poppins_400Regular,
-    'Poppins-Medium': Poppins_500Medium,
-    'Poppins-SemiBold': Poppins_600SemiBold,
-    'Poppins-Bold': Poppins_700Bold,
-  });
-
-  // Hide splash screen once fonts are loaded
-  useEffect(() => {
-    if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  // Return null to keep splash screen visible while fonts load
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
-
+ 
   return (
     <Tabs
       screenOptions={{

@@ -1,3 +1,6 @@
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { COLORS, FONT } from '@/constants';
+import { useAuthStore } from '@/store/useAuthStore';
 import { Link, router } from 'expo-router';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react-native';
 import React, { useState } from 'react';
@@ -10,9 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { COLORS, FONT } from '@/constants';
-import { useAuthStore } from '@/store/useAuthStore';
-import { ErrorMessage } from '@/components/ErrorMessage';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');

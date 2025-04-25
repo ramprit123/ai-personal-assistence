@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { Link, router } from 'expo-router';
-import { Eye, EyeOff } from 'lucide-react-native';
+import { ErrorMessage } from '@/components/ErrorMessage';
 import { COLORS, FONT } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
-import { ErrorMessage } from '@/components/ErrorMessage';
+import { Link, router } from 'expo-router';
+import { Eye, EyeOff } from 'lucide-react-native';
+import React, { useState } from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');

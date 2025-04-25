@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { Link, router } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
 import { COLORS, FONT } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
+import { Link, router } from 'expo-router';
+import { ArrowLeft } from 'lucide-react-native';
+import React, { useState } from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
